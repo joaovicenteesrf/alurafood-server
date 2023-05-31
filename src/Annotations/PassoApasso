@@ -1,0 +1,20 @@
+1 - Configurar o application.properties:
+    A primeira coisa que incluiremos é a porta, para o gateway e para o serviço de descoberta é recomendável ter uma
+    porta fixa para ele subir. Na primeira linha vamos colocar server.port=8081, o padrão é subir na 8761, mas o nosso
+    vai ser 8081 para ficar diferente.
+    Ele pode atuar tanto como servidor quanto poderíamos incluir essa dependência em um projeto nosso e ela atuar também
+     como cliente. Como não é o nosso caso, estamos montando um projeto dedicado para o servidor, precisamos indicar
+     duas propriedades para ele não fazer o registro dessa própria aplicação no serviço de descoberta.
+        eureka.client.register-with-eureka=false
+        eureka.client.fetch-registry=false
+    Essas são as duas propriedades. Ambas, eureka.client.register-with-eureka e eureka.client.fetch-registry serão
+    falsas, dado que o uso da aplicação vai ser exclusivo com o servidor. Além disso, vamos inserir o nome da nossa
+    aplicação com o comando spring.application.name=server.
+    Por fim, como trocamos o endereço é preciso informar a URL para conseguirmos acessar esses serviços, a que usaremos
+    será a eureka.client.serviceUrl.defaultZone=http://localhost:8081/eureka.
+    Referente as configurações é basicamente isso nesse arquivo application.properties. Agora, precisamos fazer mais
+    uma alteração na ServerApplication em "src > main > java > br.com.alurafood.server". Incluiremos uma anotação
+    indicando que vamos trabalhar com Eureka Server usando o @EnableEurekaServer.
+    Com isso, ele já consegue entender que é uma aplicação do Eureka, que é um servidor e vamos conseguir ver no
+    navegador para podermos aguardar os registros dos microsserviços. Agora rodaremos a aplicação com "Shift + F10" e
+    assim que ela subir na porta 8081 olharemos no browser.
